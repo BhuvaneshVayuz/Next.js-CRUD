@@ -1,9 +1,9 @@
-"use client"; 
+"use client";
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { fetchCategories } from '@/lib/store/actions/categoriesActions';
-import { useRouter } from 'next/navigation'
+import { fetchCategories, deleteCategory } from '@/lib/store/actions/categoriesActions'; // Import deleteCategory thunk
+import { useRouter } from 'next/navigation';
 
 export default function Categories() {
   const dispatch = useDispatch();
@@ -20,6 +20,20 @@ export default function Categories() {
   // Handle navigation to blogs page
   const navigateToBlogs = (categoryId) => {
     router.push(`/blogs?categoryId=${categoryId}`);
+  };
+
+  // Handle category deletion
+  const handleDeleteCategory = (categoryId) => {
+    // if (confirm("Are you sure you want to delete this category?")) { // Confirm deletion
+      dispatch(deleteCategory(categoryId))
+        // .then((result) => {
+        //   if (deleteCategory.fulfilled.match(result)) {
+        //     alert("Category deleted successfully!");
+        //   } else {
+        //     alert(result.payload.message || "Failed to delete category.");
+        //   }
+        // });
+    // }
   };
 
   return (
@@ -55,7 +69,7 @@ export default function Categories() {
             </thead>
             <tbody>
               {categories.map((category) => (
-                <tr key={category.id} className="hover:bg-gray-50 flex justify-between transition">
+                <tr key={category._id} className="hover:bg-gray-50 flex justify-between transition">
                   <td className="py-3 px-4 border-b">{category.title}</td>
                   <td className="py-3 px-4 border-b flex items-center space-x-3">
                     <button
@@ -63,6 +77,12 @@ export default function Categories() {
                       className="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition"
                     >
                       View Blogs
+                    </button>
+                    <button
+                      onClick={() => handleDeleteCategory(category._id)} // Delete action
+                      className="bg-red-600 text-white px-5 py-2 rounded-md hover:bg-red-700 transition"
+                    >
+                      Delete
                     </button>
                   </td>
                 </tr>

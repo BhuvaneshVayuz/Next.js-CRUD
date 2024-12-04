@@ -36,5 +36,5 @@ const authMiddleware = async (req) => {
 export default authMiddleware;
 
 export const config = {
-  matcher: ['/api/categories' , '/api/blogs/:path*', '/api/auth/getUser'], // specify the paths where this middleware applies
+  matcher: ['/api/categories/:path*' , '/api/blogs/:path*', '/api/auth/getUser'], // specify the paths where this middleware applies
 };

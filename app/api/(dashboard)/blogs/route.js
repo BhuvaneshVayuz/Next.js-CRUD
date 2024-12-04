@@ -86,11 +86,12 @@ export const GET = async (request) => {
     // Pagination logic
     const skip = (page - 1) * limit;
 
-    // Fetch blogs based on the constructed filter
+    // Fetch blogs and populate the category details (specifically the title)
     const blogs = await Blog.find(filter)
       .sort({ createdAt: "asc" })
       .skip(skip)
-      .limit(limit);
+      .limit(limit)
+      .populate('category', 'title'); // Populate category title
 
     return new NextResponse(JSON.stringify({ blogs }), {
       status: 200,
@@ -101,6 +102,7 @@ export const GET = async (request) => {
     });
   }
 };
+
 
 
 export const POST = async (request) => {
