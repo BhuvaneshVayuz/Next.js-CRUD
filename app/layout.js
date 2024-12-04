@@ -6,7 +6,7 @@ import StoreProvider from './storeProvider';
 import Navbar from "@/components/navbar";
 import ProtectedLayout from "@/components/protectedLayout";
 
-const publicRoutes = ['/login', '/signup'];
+const publicRoutes = ['/login', '/signUp'];
 const routesWithNavbar = ["/blogs", "/categories", "/anotherRoute"];
 
 export default function RootLayout({ children }) {
