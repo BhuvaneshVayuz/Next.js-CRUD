@@ -88,7 +88,7 @@ console.log(loginError , 'error');
         </button>
       </form>
       <p className="text-gray-700 text-sm mt-4 text-center">
-        Don't have an account? <Link href="/signUp" className="text-blue-500">Sign up here</Link>
+        Do not have an account? <Link href="/signUp" className="text-blue-500">Sign up here</Link>
       </p>
     </div>
   );
