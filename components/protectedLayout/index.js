@@ -1,10 +1,10 @@
 // components/ProtectedLayout.js
 "use client";
 
-import AuthProvider from "./authProvider";
+import AuthProvider from "../authProvider";
+
 
 export default function ProtectedLayout({ children }) {
-  console.log('rannnn');
   
   return (
     <AuthProvider>

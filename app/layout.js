@@ -2,9 +2,9 @@
 "use client"
 import "./globals.css";
 import { usePathname } from 'next/navigation';
-import ProtectedLayout from '@/components/ProtectedLayout';
 import StoreProvider from './storeProvider';
 import Navbar from "@/components/navbar";
+import ProtectedLayout from "@/components/protectedLayout";
 
 const publicRoutes = ['/login', '/signup'];
 const routesWithNavbar = ["/blogs", "/categories", "/anotherRoute"];
