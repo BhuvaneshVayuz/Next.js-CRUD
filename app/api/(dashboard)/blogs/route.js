@@ -14,25 +14,13 @@ export const GET = async (request) => {
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "10");
 
-    // Get userId from req.user (set by the authMiddleware)
-    const userHeader = JSON.parse(request.headers.get("X-User"));
-    const userId = userHeader.userId;
-
-    // Validate the user
+    // Connect to the database
     await connect();
-    const user = await User.findById(userId);
-    if (!user) {
-      return new NextResponse(JSON.stringify({ message: "User not found" }), {
-        status: 404,
-      });
-    }
 
-    // Initialize the filter with the userId
-    const filter = {
-      user: new Types.ObjectId(userId),
-    };
+    // Initialize the filter without user-related conditions
+    const filter = {};
 
-    // Only add the category filter if categoryId is provided and valid
+    // Add category filter if categoryId is provided and valid
     if (categoryId) {
       if (!Types.ObjectId.isValid(categoryId)) {
         return new NextResponse(
@@ -45,13 +33,10 @@ export const GET = async (request) => {
       if (!category) {
         return new NextResponse(
           JSON.stringify({ message: "Category not found" }),
-          {
-            status: 404,
-          }
+          { status: 404 }
         );
       }
 
-      // Add category filter if categoryId is valid
       filter.category = new Types.ObjectId(categoryId);
     }
 
@@ -105,67 +90,68 @@ export const GET = async (request) => {
 
 
 
-export const POST = async (request) => {
-  try {
-    const { searchParams } = new URL(request.url);
-    // const userId = searchParams.get("userId");
-    const categoryId = searchParams.get("categoryId");
 
-    const userHeader = JSON.parse(request.headers.get("X-User"));
+// export const POST = async (request) => {
+//   try {
+//     const { searchParams } = new URL(request.url);
+//     // const userId = searchParams.get("userId");
+//     const categoryId = searchParams.get("categoryId");
 
-    const userId = userHeader.userId;
+//     const userHeader = JSON.parse(request.headers.get("X-User"));
+
+//     const userId = userHeader.userId;
 
 
-    const body = await request.json();
-    const { title, description } = body;
+//     const body = await request.json();
+//     const { title, description } = body;
 
-    if (!userId || !Types.ObjectId.isValid(userId)) {
-      return new NextResponse(
-        JSON.stringify({ message: "Invalid or missing userId" }),
-        { status: 400 }
-      );
-    }
+//     if (!userId || !Types.ObjectId.isValid(userId)) {
+//       return new NextResponse(
+//         JSON.stringify({ message: "Invalid or missing userId" }),
+//         { status: 400 }
+//       );
+//     }
 
-    if (!categoryId || !Types.ObjectId.isValid(categoryId)) {
-      return new NextResponse(
-        JSON.stringify({ message: "Invalid or missing categoryId" }),
-        { status: 400 }
-      );
-    }
+//     if (!categoryId || !Types.ObjectId.isValid(categoryId)) {
+//       return new NextResponse(
+//         JSON.stringify({ message: "Invalid or missing categoryId" }),
+//         { status: 400 }
+//       );
+//     }
 
-    await connect();
+//     await connect();
 
-    const user = await User.findById(userId);
-    if (!user) {
-      return new NextResponse(JSON.stringify({ message: "User not found" }), {
-        status: 404,
-      });
-    }
-    const category = await Category.findById(categoryId);
-    if (!category) {
-      return new NextResponse(
-        JSON.stringify({ message: "Category not found" }),
-        {
-          status: 404,
-        }
-      );
-    }
+//     const user = await User.findById(userId);
+//     if (!user) {
+//       return new NextResponse(JSON.stringify({ message: "User not found" }), {
+//         status: 404,
+//       });
+//     }
+//     const category = await Category.findById(categoryId);
+//     if (!category) {
+//       return new NextResponse(
+//         JSON.stringify({ message: "Category not found" }),
+//         {
+//           status: 404,
+//         }
+//       );
+//     }
 
-    const newBlog = new Blog({
-      title,
-      description,
-      user: new Types.ObjectId(userId),
-      category: new Types.ObjectId(categoryId),
-    });
+//     const newBlog = new Blog({
+//       title,
+//       description,
+//       user: new Types.ObjectId(userId),
+//       category: new Types.ObjectId(categoryId),
+//     });
 
-    await newBlog.save();
-    return new NextResponse(
-      JSON.stringify({ message: "Blog is created", blog: newBlog }),
-      { status: 200 }
-    );
-  } catch (error) {
-    return new NextResponse("Error in fetching blogs" + error.message, {
-      status: 500,
-    });
-  }
-};
+//     await newBlog.save();
+//     return new NextResponse(
+//       JSON.stringify({ message: "Blog is created", blog: newBlog }),
+//       { status: 200 }
+//     );
+//   } catch (error) {
+//     return new NextResponse("Error in fetching blogs" + error.message, {
+//       status: 500,
+//     });
+//   }
+// };

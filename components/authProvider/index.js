@@ -1,46 +1,38 @@
 "use client";
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { checkUserLoggedIn } from '@/lib/store/actions/authActions';
+
+const privateRoutes = ['/blogs/add', '/categories/add']; // Private routes that need authentication
 
 export default function AuthProvider({ children }) {
   const dispatch = useDispatch();
   const router = useRouter();
+  const pathname = usePathname(); // Get the current path
   const { isAuthenticated } = useSelector((state) => state.auth);
-
-const [loading , setLoading] = useState(true)
-
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const check = async()=>{
-await dispatch(checkUserLoggedIn()); // Fetch user on initial load
-setLoading(false)
-    }
-    check()
+    const check = async () => {
+      await dispatch(checkUserLoggedIn()); // Fetch user on initial load
+      setLoading(false);
+    };
+    check();
   }, [dispatch]);
 
-
-console.log('wonder', isAuthenticated , loading);
-
-
+  // Redirect if we are on a private route and the user is not authenticated
   useEffect(() => {
-    // Redirect unauthenticated users to login page
-    if (!loading && !isAuthenticated) {
-      router.push('/login');
+    if (!loading && privateRoutes.includes(pathname) && !isAuthenticated) {
+      router.push('/login'); // Redirect to login page
     }
-  }, [loading, isAuthenticated, router]);
+  }, [loading, pathname, isAuthenticated, router]);
 
   // Show a loader or placeholder while checking authentication
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  // Only render children if the user is authenticated
-  if (isAuthenticated) {
-    return <>{children}</>;
-  }
-
-  // Optionally return null while redirecting to avoid flickering
-  return null;
+  // Render children regardless of authentication status
+  return <>{children}</>;
 }

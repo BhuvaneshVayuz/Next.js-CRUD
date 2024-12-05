@@ -1,29 +1,18 @@
-// app/layout.js
-"use client"
+// "use client";
 import "./globals.css";
-import { usePathname } from 'next/navigation';
 import StoreProvider from './storeProvider';
 import Navbar from "@/components/navbar";
-import ProtectedLayout from "@/components/protectedLayout";
-
-const publicRoutes = ['/login', '/signUp'];
-const routesWithNavbar = ["/blogs", "/categories", "/anotherRoute"];
+import AuthProvider from "@/components/authProvider";
 
 export default function RootLayout({ children }) {
-  const pathname = usePathname();
-
-  const isPublicRoute = publicRoutes.includes(pathname);
-  const showNavbar = routesWithNavbar.some(route => pathname.includes(route));
-
-
-
-
   return (
     <html lang="en">
       <body>
         <StoreProvider>
-        {showNavbar && <Navbar />} 
-          {isPublicRoute ? children : <ProtectedLayout>{children}</ProtectedLayout>}
+          <AuthProvider>
+            <Navbar /> {/* Always show the Navbar */}
+            {children} {/* Children will be rendered based on authentication */}
+          </AuthProvider>
         </StoreProvider>
       </body>
     </html>

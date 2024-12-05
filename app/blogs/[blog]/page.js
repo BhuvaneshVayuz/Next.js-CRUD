@@ -1,31 +1,26 @@
-"use client";
 
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { fetchBlog } from "@/lib/store/actions/blogsAction";
-import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { makeStore } from "@/lib/store/store";
 
 
 
-export default function BlogDetail() {
-  
-  const dispatch = useDispatch();
-  
+export default async function BlogDetail({searchParams , params}) {
+  const store = makeStore()
+  const {blog:id} = await params
+
+      if (id) {      
+        await store.dispatch(fetchBlog(id));      
+      }
+
+      const state = store.getState();
+
   // Accessing the state from the Redux store
-  const { blog, loading, error } = useSelector((state) => state.blogs);
+  const { blog, loading, error } = state.blogs;
 
   // Fetch the blog when the component mounts or the ID changes
-const {blog:id} = useParams()
  
-const searchParams = useSearchParams();
-const categoryId = searchParams.get('categoryId');
-
-  useEffect(() => {
-    if (id) {      
-      dispatch(fetchBlog(id));
-    }
-  }, [dispatch, id]);
+const {categoryId } = await searchParams;
 
   // Display loading or error messages
   if (loading) return <p>Loading...</p>;

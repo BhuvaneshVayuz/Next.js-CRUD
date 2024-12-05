@@ -19,13 +19,16 @@ export default function AddBlog() {
   const searchParams = useSearchParams();
   const initialCategoryId = searchParams.get('categoryId'); // Get categoryId from query params
 
-  // Fetch categories from the Redux store
+  // Fetch categories and user data from the Redux store
   const { categories, loading: categoriesLoading, error } = useSelector((state) => state.categories);
+  const { user, isAuthenticated } = useSelector((state) => state.auth); // Get logged-in user's ID
 
   // Fetch categories when the component mounts
   useEffect(() => {
-    dispatch(fetchCategories());
-  }, [dispatch]);
+    if (isAuthenticated) {
+      dispatch(fetchCategories());
+    }
+  }, [dispatch, isAuthenticated]);
 
   // Set initial category if provided in query params
   useEffect(() => {
@@ -33,6 +36,9 @@ export default function AddBlog() {
       setCategoryId(initialCategoryId);
     }
   }, [initialCategoryId, categories]); // Ensure it updates when categories change
+
+  // Filter categories to show only those belonging to the logged-in user
+  const filteredCategories = categories.filter((category) => category.user === user.userId);
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -50,8 +56,8 @@ export default function AddBlog() {
   };
 
   return (
-    <div className='bg-gray-300 w-full min-h-screen py-20 relative'>
-      <Link href={categoryId ? `/blogs?categoryId=${categoryId}` : '/blogs'} className='text-black text-2xl absolute top-2 left-2'>
+    <div className="bg-gray-300 w-full min-h-screen py-20 relative">
+      <Link href={categoryId ? `/blogs?categoryId=${categoryId}` : '/blogs'} className="text-black text-2xl absolute top-2 left-2">
         {`<--`}
       </Link>
       <div className="max-w-md mx-auto p-6 text-black bg-white shadow-md rounded-lg">
@@ -91,7 +97,7 @@ export default function AddBlog() {
               required
             >
               <option value="" disabled>{categoriesLoading ? 'Loading categories...' : 'Select a category'}</option>
-              {categories.map((category) => (
+              {filteredCategories.map((category) => (
                 <option key={category._id} value={category._id}>
                   {category.title}
                 </option>
