@@ -21,6 +21,10 @@ export default function AuthProvider({ children }) {
     check();
   }, [dispatch]);
 
+
+console.log(useSelector((state) => state.auth) , 'hmmm');
+
+
   // Redirect if we are on a private route and the user is not authenticated
   useEffect(() => {
     if (!loading && privateRoutes.includes(pathname) && !isAuthenticated) {

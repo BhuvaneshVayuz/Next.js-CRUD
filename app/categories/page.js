@@ -1,17 +1,20 @@
 // "use client";
 
 import Button from '@/components/button';
+import { checkUserLoggedIn } from '@/lib/store/actions/authActions';
 import { fetchCategories, deleteCategory } from '@/lib/store/actions/categoriesActions';
 import { makeStore } from '@/lib/store/store';
 
 export default async function Categories() {
   const store = makeStore()
 
+  await store.dispatch(checkUserLoggedIn());
   await store.dispatch(fetchCategories());
   const state = store.getState();
   const { categories, loading, error } =  state.categories  
   const { user: currentUser } = state.auth
 
+console.log(state, 'okokok');
 
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
@@ -45,14 +48,14 @@ export default async function Categories() {
             <tbody>
               {categories.map((category) => (
                 <tr key={category._id} className="hover:bg-gray-50 flex justify-between transition">
-                  <td className="py-3 px-4 border-b">{category.title}</td>
+                  <td className="py-3 px-4 border-b">{category?.title}</td>
                   <td className="py-3 px-4 border-b flex items-center space-x-3">
                     
                     {/* Show Delete button only if the category belongs to the logged-in user */}
-                    <Button name={"View Blogs"} route={`/blogs?categoryId=${category._id}`} />
+                    <Button name={"View Blogs"} route={`/blogs?categoryId=${category?._id}`} />
 
-                    {currentUser && currentUser.userId === category.user && (
-                                          <Button name={"Delete"} functionToDispatch = { ()=> deleteCategory} params={category._id} /> 
+                    {currentUser && currentUser?.userId === category?.user && (
+                                          <Button name={"Delete"} functionToDispatch = { ()=> deleteCategory} params={category?._id} /> 
 
                     )}
                   </td>
