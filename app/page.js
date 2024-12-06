@@ -6,45 +6,73 @@ import Head from "next/head";
 
 export default function Home() {
 
+
+  function addProductJsonLd() {
+    return {
+      __html: `{
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      "name": "Executive Anvil",
+      "image": [
+        "https://example.com/photos/1x1/photo.jpg",
+        "https://example.com/photos/4x3/photo.jpg",
+        "https://example.com/photos/16x9/photo.jpg"
+       ],
+      "description": "Sleeker than ACME's Classic Anvil, the Executive Anvil is perfect for the business traveler looking for something to drop from a height.",
+      "sku": "0446310786",
+      "mpn": "925872",
+      "brand": {
+        "@type": "Brand",
+        "name": "ACME"
+      },
+      "review": {
+        "@type": "Review",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "4",
+          "bestRating": "5"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "Fred Benson"
+        }
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.4",
+        "reviewCount": "89"
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": "https://example.com/anvil",
+        "priceCurrency": "USD",
+        "price": "119.99",
+        "priceValidUntil": "2020-11-20",
+        "itemCondition": "https://schema.org/UsedCondition",
+        "availability": "https://schema.org/InStock"
+      }
+    }
+  `,
+    };
+  }
+
+
+
   // Handlers for button navigation
   return (
     <>
-    <Head>
-        <title>Welcome to My Blog</title>
-        <meta name="description" content="Welcome to my personal blog, where I share insights on various topics, including technology, lifestyle, and more." />
-        <meta property="og:title" content="Welcome to My Blog" />
-        <meta property="og:description" content="Welcome to my personal blog, where I share insights on various topics, including technology, lifestyle, and more." />
-        <meta property="og:image" content="https://example.com/og-image.jpg" />
-        
-        {/* Schema.org Structured Data */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "http://schema.org",
-            "@type": "WebPage",
-            "name": "Welcome to My Blog",
-            "description": "Welcome to my personal blog, where I share insights on various topics, including technology, lifestyle, and more.",
-            "url": "https://next-js-crud-pearl.vercel.app",
-            "publisher": {
-              "@type": "Organization",
-              "name": "My Blog",
-              "logo": "https://example.com/logo.png"
-            },
-            "mainEntityOfPage": {
-              "@type": "Article",
-              "headline": "The Future of Web Development",
-              "datePublished": "2024-12-06T12:00:00Z",
-              "author": {
-                "@type": "Person",
-                "name": "John Doe"
-              },
-              "publisher": {
-                "@type": "Organization",
-                "name": "My Blog"
-              },
-              "image": "https://example.com/article-image.jpg"
-            }
-          })}
-        </script>
+      <Head>
+        <title>My Product</title>
+        <meta
+          name="description"
+          content="Super product with free shipping."
+          key="desc"
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={addProductJsonLd()}
+          key="product-jsonld"
+        />
       </Head>
     
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-8 sm:p-20 font-sans">
