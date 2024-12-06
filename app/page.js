@@ -18,21 +18,25 @@ export default function Home() {
           content="Super product with free shipping."
           key="desc"
         />
-       <script type="application/ld+json">
-    {`${{
+       <script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
       "@context": "https://schema.org/",
       "@type": "ImageObject",
-      "contentUrl": "https://example.com/photos/1x1/black-labrador-puppy.jpg",
-      "license": "https://example.com/license",
-      "acquireLicensePage": "https://example.com/how-to-use-my-images",
-      "creditText": "Labrador PhotoLab",
-      "creator": {
+      contentUrl: "https://example.com/photos/1x1/black-labrador-puppy.jpg",
+      license: "https://example.com/license",
+      acquireLicensePage: "https://example.com/how-to-use-my-images",
+      creditText: "Labrador PhotoLab",
+      creator: {
         "@type": "Person",
-        "name": "Brixton Brownstone"
-       },
-      "copyrightNotice": "Clara Kent"
-    }}`}
-    </script>
+        name: "Brixton Brownstone",
+      },
+      copyrightNotice: "Clara Kent",
+    }),
+  }}
+></script>
+
       </Head>
     
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-8 sm:p-20 font-sans">
