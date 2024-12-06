@@ -5,14 +5,21 @@ import Head from "next/head";
 
 
 export default function Home() {
-
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: "flashing lights",
     image: "https://unsplash.com/photos/a-view-of-a-city-from-underneath-a-bridge-cYnrt5kjF5I",
     description: "okokokok",
-  }
+    offers: {
+      '@type': 'Offer',
+      price: '29.99',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      url: 'https://example.com/flashing-lights', // URL of the product page
+    },
+  };
+  
 
   // Handlers for button navigation
   return (
