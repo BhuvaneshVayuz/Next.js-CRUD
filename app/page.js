@@ -1,6 +1,7 @@
 // "use client";
 
 import Button from "@/components/button";
+import Head from "next/head";
 
 
 export default function Home() {
